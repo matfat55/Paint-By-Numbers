@@ -13,6 +13,10 @@
       <input type="number" id="gridResolution" name="gridResolution" min="1" max="100" value="10">
       <button onclick="applyGridResolution()">Apply</button>
     </div>
+    <div>
+      <label for="imageUpload">Upload an image:</label>
+      <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
+    </div>
     <div id="grid"></div>
     <div style="display: inline-block; vertical-align: top; position: relative">
       <canvas id="canvas" width="250" height="375"></canvas>
@@ -28,5 +32,8 @@
     <script src="colours.js"></script>
     <script src="pixel_array_2.js"></script>
     <script src="script8.js"></script>
+    <script>
+      document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
+    </script>
   </body>
 </html>
