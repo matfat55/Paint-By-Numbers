@@ -113,3 +113,59 @@ Mousetrap.bind('w', function() {
   posY = Math.max(posY-1, 0)
 	displayGrid()
 })
+
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const encodedImage = encodeImage(imageData);
+        const processedImage = processImage(encodedImage);
+        displayImage(processedImage);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function encodeImage(imageData) {
+  const encodedImage = [];
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    const r = imageData.data[i];
+    const g = imageData.data[i + 1];
+    const b = imageData.data[i + 2];
+    const a = imageData.data[i + 3];
+    encodedImage.push({ r, g, b, a });
+  }
+  return encodedImage;
+}
+
+function processImage(encodedImage) {
+  // Placeholder for image processing logic
+  return encodedImage;
+}
+
+function displayImage(processedImage) {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const imageData = ctx.createImageData(canvas.width, canvas.height);
+  for (let i = 0; i < processedImage.length; i++) {
+    const pixel = processedImage[i];
+    imageData.data[i * 4] = pixel.r;
+    imageData.data[i * 4 + 1] = pixel.g;
+    imageData.data[i * 4 + 2] = pixel.b;
+    imageData.data[i * 4 + 3] = pixel.a;
+  }
+  ctx.putImageData(imageData, 0, 0);
+}
+
+document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
