@@ -24,9 +24,9 @@ h3 {
 
 #grid {
 	display: inline-grid;
-	width: 750px;
-	height: 750px;
-	grid-template-columns: repeat(10, 1fr);
+	width: var(--grid-width, 750px);
+	height: var(--grid-height, 750px);
+	grid-template-columns: repeat(var(--grid-size, 10), 1fr);
 	vertical-align: top;
 }
 
