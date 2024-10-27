@@ -37,10 +37,12 @@ for (i=0;i<52;i++) {
 }
 
 function displayGrid() {
+	const gridResolution = parseInt(document.getElementById("gridResolution").value);
+	document.getElementById("grid").style.setProperty('--grid-size', gridResolution);
 	document.getElementById("grid").innerHTML = ""
-	for (i=0;i<100;i++) {
-		gridX = (i % 10)+posX
-		gridY = Math.floor(i / 10)+posY
+	for (i=0;i<gridResolution*gridResolution;i++) {
+		gridX = (i % gridResolution)+posX
+		gridY = Math.floor(i / gridResolution)+posY
 		tileDone = tiles[gridY*250+gridX]
 		document.getElementById("grid").innerHTML += "<div class='tile' onmouseover='paintTile("+gridX+","+gridY+")'></div>"
 		if (tileDone) {document.getElementsByClassName("tile")[i].innerHTML = "&nbsp;"}
@@ -51,10 +53,10 @@ function displayGrid() {
 	const ctx = canvas.getContext("2d");
 	ctx.clearRect(0, 0, 250, 375);
 	ctx.fillStyle = "red"
-	ctx.fillRect(posX+1,posY+1, 10, 1)
-	ctx.fillRect(posX+1,posY+1, 1, 10)
-	ctx.fillRect(posX+1,posY+10, 10, 1)
-	ctx.fillRect(posX+10,posY+1, 1, 10)
+	ctx.fillRect(posX+1,posY+1, gridResolution, 1)
+	ctx.fillRect(posX+1,posY+1, 1, gridResolution)
+	ctx.fillRect(posX+1,posY+gridResolution, gridResolution, 1)
+	ctx.fillRect(posX+gridResolution,posY+1, 1, gridResolution)
 }
 displayGrid()
 
@@ -73,6 +75,10 @@ function paintTile(x,y) {
 function changePalette(x) {
 	currentColour = x
 	document.getElementById("currentColour").innerHTML = currentColour
+}
+
+function applyGridResolution() {
+	displayGrid();
 }
 
 Mousetrap.bind('right', function() {
